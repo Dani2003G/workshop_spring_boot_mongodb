@@ -26,8 +26,8 @@ public class UserService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 	
-	public User insert(User obj) {
-		return repository.insert(obj);
+	public User insert(User user) {
+		return repository.insert(user);
 	}
 	
 	public void delete(String id) {
@@ -35,6 +35,17 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	public User update(User user) {
+		User newUser = findById(user.getId());
+		updateData(newUser, user);
+		return repository.save(newUser);
+	}
+	
+	private void updateData(User newUser, User user) {
+		newUser.setName(user.getName());
+		newUser.setEmail(user.getEmail());
+	}
+
 	public User fromDTO(UserDTO objDTO) {
 		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
 	}
